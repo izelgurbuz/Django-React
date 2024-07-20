@@ -1,0 +1,50 @@
+everytime we make a request to backend , backend needs to know who we are and permissions. -> JWT
+- access token & refresh token
+
+Serialization:
+
+Convert to Native Types: Transforms Django model instances or querysets into Python data types.
+Render as JSON or XML: Converts the native Python data into formats like JSON or XML, which can be easily sent over HTTP.
+
+Deserialization:
+
+Parse Incoming Data: Converts data received (e.g., JSON) into Python data types.
+Validation and Save: Validates the incoming data and converts it back to Django model instances.
+
+In a Django project, views.py is a Python module where you define functions (or classes) 
+that handle web requests and return web responses. These functions are typically referred to as view functions. 
+Each view function receives an HTTP request, processes it, and returns an HTTP response. 
+Views in Django determine what content is displayed on a web page based on the request received from a user's browser. 
+They often interact with models (database queries) and templates (HTML files) to render dynamic web pages.
+
+In a Django project, urls.py is a Python module where you define the mapping between URLs (or routes) and view functions
+(or class-based views) that handle those URLs. This file plays a key role in determining how URLs are routed within your web application.
+
+In a Django project, the views.py file typically contains Python functions or classes 
+that define the logic for handling HTTP requests and generating HTTP responses. 
+
+Running migrations in Django ensures that your database schema stays synchronized with the structure of your models. 
+It's essential whenever you make changes to your models or set up a new database, 
+ensuring your application's data storage matches its current requirements.
+
+> python manage.py makemigrations
+> python manage.py migrate
+> python manage.py showmigrations
+> python manage.py migrate --fake myapp 0001_initial (This marks a migration as applied without actually running it. 
+Useful in cases where you manually modify the database schema or when resolving migration conflicts.)
+> python manage.py migrate myapp 0001_initial (This unapplies a migration, effectively rolling back changes made by that migration.)
+
+
+an example model to show different fields for models :
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField()
+    birth_date = models.DateField()
+    website = models.URLField()
+    is_active = models.BooleanField(default=True)
+    friends = models.ManyToManyField(User, related_name="friends_profiles")
+    favorite_note = models.ForeignKey('Note', on_delete=models.SET_NULL, null=True, related_name="favorited_by")
+
+    def __str__(self):
+        return self.user.username
